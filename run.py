@@ -6,7 +6,7 @@ ch = Channels()
 sql_insert_kanal = "INSERT INTO kanallar (kanal_name) VALUES (%s)"
 sql_insert_topic = "INSERT INTO basliklar (baslik_name,kanal_id) VALUES (%s,%s)"
 sql_kanal_check = "SELECT * FROM kanallar WHERE kanal_name=%s" #Checks if the kanal has inserted already
-sql_topic_check = "SELECT * FROM basliklar WHERE baslik_name=%s" #Checks if the baslik has inserted already
+sql_topic_check = "SELECT * FROM basliklar WHERE baslik_name=%s AND kanal_id=%s" #Checks if the baslik has inserted already
 
 topics = ch.get_topics()
 
@@ -16,7 +16,7 @@ for by_channel in topics:
         channel_obj = db.query_select(sql_kanal_check, [by_channel["channel_name"]])
         print(channel_obj)
         if channel_obj:
-            topic_obj = db.query_select(sql_topic_check, [by_topic["topic_title"]])
+            topic_obj = db.query_select(sql_topic_check, [by_topic["topic_title"],channel_obj[0]["id"]])
             #if the topic_obj is empty
             if topic_obj:
                 print("TOPICMEVCUT")
